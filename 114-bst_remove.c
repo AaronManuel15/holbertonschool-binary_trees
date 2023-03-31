@@ -33,43 +33,49 @@ bst_t *bst_search(const bst_t *tree, int value)
  * Return: pointer to the new root node of the tree after
  * removing the desired value
  */
-bst_t *bst_remove(bst_t *root, int value) {
-    if (root == NULL) {
-        // empty tree
-        return NULL;
-    } else if (value < root->n) {
-        // value is in the left subtree
-        root->left = bst_remove(root->left, value);
-        return root;
-    } else if (value > root->n) {
-        // value is in the right subtree
-        root->right = bst_remove(root->right, value);
-        return root;
-    } else {
-        // found the node to remove
-        if (root->left == NULL && root->right == NULL) {
-            // node has no children
-            free(root);
-            return NULL;
-        } else if (root->left == NULL) {
-            // node has only a right child
-            bst_t *temp = root->right;
-            free(root);
-            return temp;
-        } else if (root->right == NULL) {
-            // node has only a left child
-            bst_t *temp = root->left;
-            free(root);
-            return temp;
-        } else {
-            // node has two children
-            bst_t *temp = root->right;
-            while (temp->left != NULL) {
-                temp = temp->left;
-            }
-            root->n = temp->n;
-            root->right = bst_remove(root->right, temp->n);
-            return root;
-        }
-    }
+bst_t *bst_remove(bst_t *root, int value)
+{
+	bst_t *temp = NULL;
+
+	if (root == NULL)
+		return (NULL);
+	else if (value < root->n)
+	{
+		root->left = bst_remove(root->left, value);
+		return (root);
+	}
+	else if (value > root->n)
+	{
+		root->right = bst_remove(root->right, value);
+		return (root);
+	}
+	else
+	{
+		if (root->left == NULL && root->right == NULL)
+		{
+			free(root);
+			return (NULL);
+		}
+		else if (root->left == NULL)
+		{
+			temp = root->right;
+			free(root);
+			return (temp);
+		}
+		else if (root->right == NULL)
+		{
+			temp = root->left;
+			free(root);
+			return (temp);
+		}
+		else
+		{
+			temp = root->right;
+			while (temp->left != NULL)
+				temp = temp->left;
+			root->n = temp->n;
+			root->right = bst_remove(root->right, temp->n);
+			return (root);
+		}
+	}
 }
